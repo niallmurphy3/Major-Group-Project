@@ -1,0 +1,99 @@
+//Login Page
+
+BEGIN
+    DISPLAY loginForm
+
+    ON userClick(loginBtn)
+        INPUT username, password
+
+        IF username OR password EMPTY THEN
+            DISPLAY "Please Fill in All Fields!."
+            STOP
+        ENDIF
+
+        CALL User Validation(username, password) → result
+
+        IF result = SUCCESS THEN
+            NAVIGATE TO HomePage
+        ELSE
+            DISPLAY "Login Details Are Invalid!."
+        ENDIF
+    ENDON
+END
+
+//Home Page
+
+BEGIN
+    DISPLAY buttons: Map, Bus Timetables, Carpool, Social Feed
+
+    ON userClick(MapBtn)
+        NAVIGATE TO MapPage
+    ENDON
+
+    ON userClick(BusTimetableBtn)
+        NAVIGATE TO BusTimetablePage
+    ENDON
+
+    ON userClick(CarpoolBtn)
+        NAVIGATE TO CarpoolMainPage
+    ENDON
+
+    ON userClick(SocialFeedBtn)
+        NAVIGATE TO SocialFeedPage
+    ENDON
+END
+
+//Campus Map Page
+
+BEGIN
+    CALL MapService.loadCampusMap() → mapData
+
+    IF mapData EXISTS THEN
+        //Load Map Data
+    ELSE
+        DISPLAY "Map unavailable."
+    ENDIF
+
+    ON userInput(searchQuery)
+        CALL //Search Map Location
+
+        IF location FOUND THEN
+            HIGHLIGHT result ON MAP
+            DISPLAY locationDetails(location)
+        ELSE
+            DISPLAY "Location not found."
+        ENDIF
+    ENDON
+END
+
+//Bus Timetable Page
+
+BEGIN
+    CALL BusAPI.fetchRoutes() → routeList
+
+    IF routeList EXISTS THEN
+        DISPLAY routeList
+    ELSE
+        DISPLAY "Bus Timetables Cannot Load!."
+    ENDIF
+
+    ON userSelect(route)
+        NAVIGATE TO BusRouteDetailsPage(route)
+    ENDON
+END
+
+//Carpool Page
+
+BEGIN
+    DISPLAY buttons: Find Ride, Offer Ride
+
+    ON userClick(FindRideBtn)
+        NAVIGATE TO FindRidePage
+    ENDON
+
+    ON userClick(OfferRideBtn)
+        NAVIGATE TO OfferRidePage
+    ENDON
+END
+
+
