@@ -1,0 +1,192 @@
+//Login Page
+
+BEGIN
+    DISPLAY loginForm
+
+    ON userClick(loginBtn)
+        INPUT username, password
+
+        IF username OR password EMPTY THEN
+            DISPLAY "Please Fill in All Fields!."
+            STOP
+        ENDIF
+
+        CALL User Validation(username, password) → result
+
+        IF result = SUCCESS THEN
+            NAVIGATE TO HomePage
+        ELSE
+            DISPLAY "Login Details Are Invalid!."
+        ENDIF
+    ENDON
+END
+
+//Home Page
+
+BEGIN
+    DISPLAY buttons: Map, Bus Timetables, Carpool, Social Feed
+
+    ON userClick(MapBtn)
+        NAVIGATE TO MapPage
+    ENDON
+
+    ON userClick(BusTimetableBtn)
+        NAVIGATE TO BusTimetablePage
+    ENDON
+
+    ON userClick(CarpoolBtn)
+        NAVIGATE TO CarpoolMainPage
+    ENDON
+
+    ON userClick(SocialFeedBtn)
+        NAVIGATE TO SocialFeedPage
+    ENDON
+END
+
+//Campus Map Page
+
+BEGIN
+    CALL MapService.loadCampusMap() → mapData
+
+    IF mapData EXISTS THEN
+        DISPLAY mapData ON SCREEN
+    ELSE
+        DISPLAY "Map unavailable."
+	STOP
+    ENDIF
+
+    ON userInput(searchQuery)
+        CALL MapService.searchLocation(searchQuery) -> location
+
+        IF location FOUND THEN
+            HIGHLIGHT result ON MAP
+            DISPLAY locationDetails(location)
+        ELSE
+            DISPLAY "Location not found."
+        ENDIF
+    ENDON
+END
+
+//Bus Timetable Page
+
+BEGIN
+    CALL BusAPI.fetchRoutes() → routeList
+
+    IF routeList EXISTS THEN
+        DISPLAY routeList
+    ELSE
+        DISPLAY "Bus Timetables Cannot Load!."
+	STOP
+    ENDIF
+
+    ON userSelect(route)
+        NAVIGATE TO BusRouteDetailsPage(route)
+    ENDON
+END
+// Bus Route Details Page
+BEGIN
+    CALL BusAPI.fetchRouteDetails(routeID) → routeDetails
+
+    IF routeDetails EXISTS THEN
+        DISPLAY routeDetails (times, stops, map)
+    ELSE
+        DISPLAY "Unable to load route information."
+    ENDIF
+END
+//Carpool Page
+
+BEGIN
+    DISPLAY buttons: Find Ride, Offer Ride
+
+    ON userClick(FindRideBtn)
+        NAVIGATE TO FindRidePage
+    ENDON
+
+    ON userClick(OfferRideBtn)
+        NAVIGATE TO OfferRidePage
+    ENDON
+END
+
+//Carpool(Find Ride) Page
+BEGIN
+    DISPLAY search fields: Destination, Time, Date
+
+    ON userClick(SearchBtn)
+        INPUT destination, time, date
+
+        CALL CarpoolDB.findRides(destination, time, date) → rideList
+
+        IF rideList NOT EMPTY THEN
+            DISPLAY rideList
+        ELSE
+            DISPLAY "No Rides Available!."
+        ENDIF
+    ENDON
+END
+
+//Carpool(Offer Ride) Page
+BEGIN
+    DISPLAY form fields: StartingPoint, Destination, Time, SeatsAvailable
+
+    ON userClick(SubmitBtn)
+        INPUT startingPoint, destination, time, seats
+
+        IF any INPUT EMPTY THEN
+            DISPLAY "Please fill in all fields."
+            STOP
+        ENDIF
+
+        CALL CarpoolDB.createRide(startingPoint, destination, time, seats)
+
+        DISPLAY "Ride successfully created."
+        NAVIGATE TO CarpoolMainPage
+    ENDON
+END
+
+//Social Page
+BEGIN
+    CALL SocialAPI.fetchPosts() → postList
+
+    IF postList EXISTS THEN
+        DISPLAY postList (username, text, timestamp, likes)
+    ELSE
+        DISPLAY "Unable to load posts."
+    ENDIF
+
+    DISPLAY button: CreatePost
+
+    ON userClick(CreatePostBtn)
+        NAVIGATE TO CreatePostPage
+    ENDON
+
+    ON userClick(PostItem)
+        NAVIGATE TO PostDetailsPage(PostItem)
+    ENDON
+END
+
+//Create Social Post
+BEGIN
+    DISPLAY textBox: PostContent
+    DISPLAY button: Submit
+
+    ON userClick(SubmitBtn)
+        INPUT content
+
+        IF content EMPTY THEN
+            DISPLAY "Post cannot be empty."
+            STOP
+        ENDIF
+
+        CALL SocialAPI.uploadPost(content) → response
+
+        IF response SUCCESS THEN
+            DISPLAY "Post uploaded!"
+            NAVIGATE TO SocialFeedPage
+        ELSE
+            DISPLAY "Failed to upload post."
+        ENDIF
+    ENDON
+END
+
+
+
