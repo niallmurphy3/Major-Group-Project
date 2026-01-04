@@ -1,0 +1,26 @@
+<Page id="HomePage">
+        <UI>
+            <Button id="MapBtn" text="Map"/>
+            <Button id="BusTimetableBtn" text="Bus Timetables"/>
+            <Button id="CarpoolBtn" text="Carpool"/>
+            <Button id="SocialFeedBtn" text="Social Feed"/>
+        </UI>
+
+        <Logic>
+            <Event on="MapBtn.click">
+                <Navigate to="MapPage"/>
+            </Event>
+
+            <Event on="BusTimetableBtn.click">
+                <Navigate to="BusTimetablePage"/>
+            </Event>
+
+            <Event on="CarpoolBtn.click">
+                <Navigate to="CarpoolMainPage"/>
+            </Event>
+
+            <Event on="SocialFeedBtn.click">
+                <Navigate to="SocialFeedPage"/>
+            </Event>
+        </Logic>
+    </Page>
