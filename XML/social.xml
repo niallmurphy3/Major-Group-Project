@@ -1,0 +1,23 @@
+<Page id="SocialFeedPage">
+    <UI>
+        <List id="PostList"/>
+        <Button id="CreatePostBtn" text="Create Post"/>
+    </UI>
+    <Logic>
+        <OnLoad>
+            <ServiceCall name="SocialAPI.fetchPosts" result="posts"/>
+            <Condition test="Exists(posts)">
+                <Action type="DisplayList" target="PostList" data="posts"/>
+            </Condition>
+            <Condition test="NotExists(posts)">
+                <Action type="DisplayMessage" text="Unable to load posts."/>
+            </Condition>
+        </OnLoad>
+    <Event on="CreatePostBtn.click">
+        <Navigate to="CreatePostPage"/>
+    </Event>
+    <Event on="PostList.select">
+        <Navigate to="PostDetailsPage" params="PostList.selectedID"/>
+    </Event>
+    </Logic>
+</Page>
