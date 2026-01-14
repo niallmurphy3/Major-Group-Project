@@ -1,0 +1,20 @@
+<Page id="FindRidePage">
+    <UI>
+    <Input id="Destination"/>
+        <Input id="Time"/>
+        <Input id="Date"/>
+        <Button id="SearchBtn" text="Search"/>
+        <List id="RideList"/>
+    </UI>
+    <Logic>
+        <Event on="SearchBtn.click">
+            <ServiceCall name="CarpoolDB.findRides" params="Destination, Time, Date" result="rides"/>
+            <Condition test="NotEmpty(rides)">
+                <Action type="DisplayList" target="RideList" data="rides"/>
+            </Condition>
+            <Condition test="Empty(rides)">
+                <Action type="DisplayMessage" text="No rides found."/>
+            </Condition>
+        </Event>
+    </Logic>
+</Page>

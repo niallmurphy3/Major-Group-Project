@@ -1,0 +1,22 @@
+<Page id="CreatePostPage">
+    <UI>
+        <TextArea id="PostContent"/>
+        <Button id="SubmitBtn" text="Submit"/>
+    </UI>
+    <Logic>
+        <Event on="SubmitBtn.click">
+            <Condition test="Empty(PostContent)">
+                <Action type="DisplayMessage" text="Post cannot be empty."/>
+                <Stop/>
+            </Condition>
+            <ServiceCall name="SocialAPI.uploadPost" params="PostContent" result="response"/>
+            <Condition test="response = SUCCESS">
+                <Action type="DisplayMessage" text="Post uploaded!"/>
+                <Navigate to="SocialFeedPage"/>
+            </Condition>
+            <Condition test="response != SUCCESS">
+                <Action type="DisplayMessage" text="Failed to upload post."/>
+            </Condition>
+        </Event>
+    </Logic>
+</Page>

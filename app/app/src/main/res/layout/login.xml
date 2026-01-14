@@ -1,0 +1,33 @@
+<Page id="LoginPage">
+        <UI>
+            <Form id="LoginForm">
+                <Input id="UsernameField"/>
+                <Input id="PasswordField"/>
+                <Button id="LoginBtn" text="Login"/>
+            </Form>
+        </UI>
+
+        <Logic>
+            <Event on="LoginBtn.click">
+                <InputRead fields="UsernameField, PasswordField"/>
+
+                <Condition test="Empty(UsernameField) OR Empty(PasswordField)">
+                    <Action type="DisplayMessage" text="Please fill in all fields."/>
+                    <Stop/>
+                </Condition>
+
+                <ServiceCall name="UserValidation" 
+                             params="UsernameField, PasswordField"
+                             result="validationResult"/>
+
+                <Condition test="validationResult = SUCCESS">
+                    <Navigate to="HomePage"/>
+                </Condition>
+
+                <Condition test="validationResult != SUCCESS">
+                    <Action type="DisplayMessage" text="Login Details Are Invalid!"/>
+                </Condition>
+
+            </Event>
+        </Logic>
+    </Page>

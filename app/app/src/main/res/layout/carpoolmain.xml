@@ -1,0 +1,16 @@
+<Page id="CarpoolMainPage">
+        <UI>
+            <Button id="FindRideBtn" text="Find Ride"/>
+            <Button id="OfferRideBtn" text="Offer Ride"/>
+        </UI>
+
+        <Logic>
+            <Event on="FindRideBtn.click">
+                <Navigate to="FindRidePage"/>
+            </Event>
+
+            <Event on="OfferRideBtn.click">
+                <Navigate to="OfferRidePage"/>
+            </Event>
+        </Logic>
+    </Page>
