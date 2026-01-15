@@ -60,7 +60,7 @@ public class MessageActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(loadRequest);
 
-        
+
         sendBtn.setOnClickListener(v -> {
 
             StringRequest sendRequest = new StringRequest(
