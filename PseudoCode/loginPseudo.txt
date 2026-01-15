@@ -1,0 +1,28 @@
+DISPLAY LOGIN
+
+WHEN Login Button is clicked
+	READ EMAIL
+	READ PASSWORD
+
+	if email or password is empty then
+	DISPLAY "Email and password is required"
+`	STOP
+
+	SEND POST request to login.php
+	email
+	password
+
+	WAIT FOR SERVER RESPONSE
+
+	IF SERVER RESPONSE
+		JSON RESPONSE
+			IF status == "success"
+				DISPLAY "Welcome" + username
+				NAVIGATE TO MESSAGES
+
+			ELSE
+				DISPLAY ERROR
+	ELSE
+		DISPLAY "network error
+
+	

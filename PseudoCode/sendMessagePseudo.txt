@@ -1,0 +1,12 @@
+connect to database
+
+Receive POST data
+	sendert email
+	recipient email
+	message content
+
+Insert new message into database
+	content
+	sender email
+	recipient email
+	

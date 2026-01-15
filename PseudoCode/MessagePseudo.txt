@@ -1,0 +1,25 @@
+START MESSAGE
+
+get logged in user email
+
+create request to get_messages.php
+	send email
+
+	when response received
+		convert response in array
+		for each message in array
+			display sender email
+			display message content
+
+	if no response
+		network error
+
+
+when send button clicked
+	create post request to send_message.php
+		send: 
+			sender email (taken from login)
+			recipient email (from textbox)
+			message content (textbox)
+	if successful:
+		Show "message sent"

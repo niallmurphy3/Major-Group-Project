@@ -1,0 +1,25 @@
+INCLUDE DATABASECONFIG
+
+IF email AND paassword
+	email = POST email
+	password = POST password
+
+	RUN SQL QUERY:
+	SELECT studentID, studentName FROM students WHERE studentEmail = email AND password = password
+
+	IF query returns at least one row
+		FETCH first row
+		RETURN JSON
+			status = "success"
+			id = studentID
+			name = studentName
+	ELSE
+		RETURN JSON
+			status = "error"
+			message = "Invalid email or password
+
+EKSE
+	RETURN JSON:
+		status = "error"
+		message = "Email and password required
+	

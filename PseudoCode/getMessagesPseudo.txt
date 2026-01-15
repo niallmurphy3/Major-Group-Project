@@ -1,0 +1,13 @@
+receive POST data
+	recipient email
+
+select all messages where
+	recipient email == email (logged in email)
+
+order by messageID
+
+create empty list
+
+for each database entry
+	add sender and content to list
+	convert list to json
