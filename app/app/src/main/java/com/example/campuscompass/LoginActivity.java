@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
             String password = ((android.widget.EditText) findViewById(R.id.passwordEditText))
                     .getText().toString().trim();
 
+            //CAHNGE IP WHEN CHANGE NETWORK and in network security conf
             String url = "http://192.168.0.207/campusCompass/login.php";
 
             RequestQueue queue = Volley.newRequestQueue(this);
