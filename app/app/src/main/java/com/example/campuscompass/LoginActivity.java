@@ -49,10 +49,27 @@ public class LoginActivity extends AppCompatActivity {
                                         "Welcome " + name,
                                         Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(LoginActivity.this, MessageActivity.class);
+                                int userLevel = obj.getInt("user_level");
+
+                                Intent intent;
+
+                                if (userLevel == 2) {
+
+                                    intent = new Intent(LoginActivity.this, AdministrationActivity.class);
+
+                                }
+                                else if (userLevel == 1) {
+                                    intent = new Intent(LoginActivity.this, StudentFeedActivity.class);
+                                }
+                                else {
+
+                                    intent = new Intent(LoginActivity.this, StudentFeedActivity.class);
+                                }
+
                                 intent.putExtra("email", email);
                                 startActivity(intent);
                                 finish();
+
 
                             } else {
                                 String message = obj.getString("message");

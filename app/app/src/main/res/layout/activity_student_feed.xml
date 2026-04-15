@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- HEADER -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Course Feed"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+
+    <!-- FEED AREA -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#F5F5F5"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/feedText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Loading feed..." />
+
+    </ScrollView>
+
+    <!-- CREATE POST SECTION -->
+    <EditText
+        android:id="@+id/postContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Write a post for your course..."
+        android:minHeight="48dp"
+        android:padding="10dp"/>
+
+    <Button
+        android:id="@+id/postBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Post"
+        android:layout_marginTop="8dp"/>
+
+    <!-- NAVIGATION TO MESSAGES -->
+    <Button
+        android:id="@+id/goMessagesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Messages"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>
