@@ -23,6 +23,10 @@ import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+
+
+    LatLng tudBlanch = new LatLng(53.39345, -6.37698);
+
     private GoogleMap mMap;
     private AutoCompleteTextView searchBox;
     private FusedLocationProviderClient fusedLocationClient;
@@ -63,20 +67,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void loadCampusLocations() {
-        campusLocations.put("TU Dublin Blanchardstown", new LatLng(53.3937, -6.3772));
-        campusLocations.put("Main Entrance", new LatLng(53.3934, -6.3770));
-        campusLocations.put("Library", new LatLng(53.3939, -6.3765));
-        campusLocations.put("Canteen", new LatLng(53.3941, -6.3771));
-        campusLocations.put("Sports Hall", new LatLng(53.3945, -6.3780));
-        campusLocations.put("Student Services", new LatLng(53.3936, -6.3762));
-        campusLocations.put("Car Park", new LatLng(53.3929, -6.3784));
+        campusLocations.put("TU Dublin Blanchardstown", new LatLng(53.40480514878633, -6.378764905256287));
+        campusLocations.put("Connect Building", new LatLng(53.40479528384249, -6.379297218342234));
+        campusLocations.put("Block AG", new LatLng(53.404443999475205, -6.379385043127654));
+        campusLocations.put("Block F", new LatLng(53.404756666616514, -6.378401339216033));
+        campusLocations.put("Block E", new LatLng(53.40525306024598, -6.377836757659842));
+        campusLocations.put("Block D", new LatLng(53.40574693070048, -6.377472991046981));
+        campusLocations.put("Block A", new LatLng(53.40624313740624, -6.376379696779155));
+        campusLocations.put("Canteen", new LatLng(53.40541934144406, -6.378592960425783));
+        campusLocations.put("Gym", new LatLng(53.40579971973759, -6.381144311266247));
+        campusLocations.put("Cafe", new LatLng(53.40636364363634, -6.37978217270747));
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng tudBlanch = new LatLng(53.3937, -6.3772);
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(53.39345, -6.37698))
+                .title("TU Dublin"));
+
+        LatLng tudBlanch = new LatLng(53.40558545083936, -6.378970945656393);
+
+
 
         for (String name : campusLocations.keySet()) {
             mMap.addMarker(new MarkerOptions()
@@ -115,13 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setMyLocationEnabled(true);
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null) {
-                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 18f));
-            }
-        });
     }
 
     @Override
