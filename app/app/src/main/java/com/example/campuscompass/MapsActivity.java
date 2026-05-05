@@ -1,7 +1,9 @@
 package com.example.campuscompass;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,15 +25,12 @@ import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-
-
-    LatLng tudBlanch = new LatLng(53.39345, -6.37698);
-
     private GoogleMap mMap;
-    private AutoCompleteTextView searchBox;
+    private AutoCompleteTextView startPoint, endPoint;
     private FusedLocationProviderClient fusedLocationClient;
 
     private final HashMap<String, LatLng> campusLocations = new HashMap<>();
+    private LatLng currentLocation;
 
     private static final int LOCATION_PERMISSION_REQUEST = 1001;
 
@@ -40,22 +39,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        searchBox = findViewById(R.id.searchBox);
+        startPoint = findViewById(R.id.startPoint);
+        endPoint = findViewById(R.id.endPoint);
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         loadCampusLocations();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        String[] locations = campusLocations.keySet().toArray(new String[0]);
+
+        String[] startOptions = new String[locations.length + 1];
+        startOptions[0] = "Current Location";
+        System.arraycopy(locations, 0, startOptions, 1, locations.length);
+
+        ArrayAdapter<String> startAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
-                campusLocations.keySet().toArray(new String[0])
+                startOptions
         );
 
-        searchBox.setAdapter(adapter);
+        ArrayAdapter<String> endAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                locations
+        );
 
-        searchBox.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedLocation = parent.getItemAtPosition(position).toString();
-            moveToCampusLocation(selectedLocation);
+        startPoint.setAdapter(startAdapter);
+        endPoint.setAdapter(endAdapter);
+
+        endPoint.setOnItemClickListener((parent, view, position, id) -> {
+            String start = startPoint.getText().toString();
+            String end = endPoint.getText().toString();
+            drawRoute(start, end);
         });
 
         SupportMapFragment mapFragment =
@@ -83,13 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(53.39345, -6.37698))
-                .title("TU Dublin"));
-
-        LatLng tudBlanch = new LatLng(53.40558545083936, -6.378970945656393);
-
-
+        LatLng campusCenter = new LatLng(53.40558545083936, -6.378970945656393);
 
         for (String name : campusLocations.keySet()) {
             mMap.addMarker(new MarkerOptions()
@@ -97,21 +106,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title(name));
         }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tudBlanch, 17f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(campusCenter, 17f));
 
         enableUserLocation();
-    }
-
-    private void moveToCampusLocation(String locationName) {
-        LatLng location = campusLocations.get(locationName);
-
-        if (location != null && mMap != null) {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 18f));
-
-            mMap.addMarker(new MarkerOptions()
-                    .position(location)
-                    .title(locationName));
-        }
     }
 
     private void enableUserLocation() {
@@ -128,7 +125,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setMyLocationEnabled(true);
 
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            }
+        });
+    }
 
+    private void drawRoute(String startName, String endName) {
+
+        LatLng startLatLng;
+        LatLng endLatLng = campusLocations.get(endName);
+
+        if (endLatLng == null) return;
+
+        if (startName.equals("Current Location")) {
+            if (currentLocation == null) return;
+            startLatLng = currentLocation;
+        } else {
+            startLatLng = campusLocations.get(startName);
+        }
+
+        if (startLatLng == null) return;
+
+        String uri = "http://maps.google.com/maps?saddr="
+                + startLatLng.latitude + "," + startLatLng.longitude
+                + "&daddr="
+                + endLatLng.latitude + "," + endLatLng.longitude;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
     }
 
     @Override
