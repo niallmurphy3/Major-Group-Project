@@ -11,6 +11,8 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Intent;
+
 public class AdministrationActivity extends AppCompatActivity {
 
     private boolean isStrongPassword(String password) {
@@ -33,6 +35,26 @@ public class AdministrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_administration);
+
+        findViewById(R.id.topBar)
+                .findViewById(R.id.logoutBtn)
+                .setOnClickListener(v -> {
+
+                    getSharedPreferences("user", MODE_PRIVATE)
+                            .edit()
+                            .clear()
+                            .apply();
+
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                });
+        String username = getIntent().getStringExtra("name");
+
+        TextView usernameText = findViewById(R.id.usernameText);
+        usernameText.setText(username);
+
+
 
         name = findViewById(R.id.adminName);
         email = findViewById(R.id.adminEmail);

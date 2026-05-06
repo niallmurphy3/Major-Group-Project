@@ -45,13 +45,16 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (status.equals("success")) {
                                 String name = obj.getString("name");
+
                                 Toast.makeText(this,
                                         "Welcome " + name,
                                         Toast.LENGTH_SHORT).show();
 
                                 int userLevel = obj.getInt("user_level");
 
+
                                 Intent intent;
+
 
                                 if (userLevel == 2) {
 
@@ -67,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
                                 intent.putExtra("email", email);
+                                intent.putExtra("name", name);
+
                                 startActivity(intent);
                                 finish();
 

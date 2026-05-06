@@ -1,5 +1,6 @@
 package com.example.campuscompass;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,24 @@ public class MessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        String username = getIntent().getStringExtra("name");
+
+        findViewById(R.id.logoutBtn).setOnClickListener(v -> {
+
+            getSharedPreferences("user", MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply();
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+
+        TextView usernameText = findViewById(R.id.usernameText);
+        usernameText.setText(username);
 
         TextView messagesText = findViewById(R.id.messagesText);
         EditText recipientEmail = findViewById(R.id.recipientEmail);

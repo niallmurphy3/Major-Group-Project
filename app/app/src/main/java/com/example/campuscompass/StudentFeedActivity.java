@@ -28,6 +28,26 @@ public class StudentFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_feed);
 
+
+
+        String username = getIntent().getStringExtra("name");
+
+        findViewById(R.id.logoutBtn).setOnClickListener(v -> {
+
+            getSharedPreferences("user", MODE_PRIVATE)
+                    .edit()
+                    .clear()
+                    .apply();
+
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+
+        TextView usernameText = findViewById(R.id.usernameText);
+        usernameText.setText(username);
+
         feedText = findViewById(R.id.feedText);
         postInput = findViewById(R.id.postContent);
 
@@ -41,6 +61,7 @@ public class StudentFeedActivity extends AppCompatActivity {
         goMessagesBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MessageActivity.class);
             intent.putExtra("email", userEmail);
+            intent.putExtra("name", getIntent().getStringExtra("name"));
             startActivity(intent);
         });
 

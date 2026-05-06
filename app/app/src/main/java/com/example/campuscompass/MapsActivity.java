@@ -39,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+
+
         startPoint = findViewById(R.id.startPoint);
         endPoint = findViewById(R.id.endPoint);
 
