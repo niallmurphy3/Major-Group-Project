@@ -13,21 +13,24 @@ import java.util.Map;
 
 public class AdministrationActivity extends AppCompatActivity {
 
-    EditText name, email, password;
+    EditText name, email, password, course;
     Spinner roleSpinner;
     Button createBtn, deleteBtn, updateBtn;
+
 
     String BASE_URL = "http://192.168.0.207/campusCompass/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_administration);
 
         name = findViewById(R.id.adminName);
         email = findViewById(R.id.adminEmail);
         password = findViewById(R.id.adminPassword);
         roleSpinner = findViewById(R.id.roleSpinner);
+        course = findViewById(R.id.adminCourse);
 
         createBtn = findViewById(R.id.createUserBtn);
         deleteBtn = findViewById(R.id.deleteUserBtn);
@@ -57,6 +60,7 @@ public class AdministrationActivity extends AppCompatActivity {
                 map.put("name", name.getText().toString());
                 map.put("email", email.getText().toString());
                 map.put("password", password.getText().toString());
+                map.put("course", course.getText().toString());
                 map.put("role", roleSpinner.getSelectedItem().toString());
                 return map;
             }

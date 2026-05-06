@@ -26,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText name = findViewById(R.id.nameEditText);
         EditText email = findViewById(R.id.emailEditText);
         EditText password = findViewById(R.id.passwordEditText);
+        EditText course = findViewById(R.id.courseEditText);
         Button registerBtn = findViewById(R.id.registerBtn);
 
         registerBtn.setOnClickListener(v -> {
@@ -52,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                     params.put("name", name.getText().toString().trim());
                     params.put("email", email.getText().toString().trim());
                     params.put("password", password.getText().toString().trim());
+                    params.put("course", course.getText().toString().trim());
                     return params;
                 }
             };
