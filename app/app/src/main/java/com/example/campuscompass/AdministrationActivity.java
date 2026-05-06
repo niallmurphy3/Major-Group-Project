@@ -13,6 +13,14 @@ import java.util.Map;
 
 public class AdministrationActivity extends AppCompatActivity {
 
+    private boolean isStrongPassword(String password) {
+        return password.length() >= 8 &&
+                password.matches(".*[A-Z].*") &&
+                password.matches(".*[a-z].*") &&
+                password.matches(".*\\d.*") &&
+                password.matches(".*[@#$%^&+=!].*");
+    }
+
     EditText name, email, password, course;
     Spinner roleSpinner;
     Button createBtn, deleteBtn, updateBtn;
@@ -48,12 +56,23 @@ public class AdministrationActivity extends AppCompatActivity {
     }
 
     private void createUser() {
+
+        String pwd = password.getText().toString().trim();
+
+        if (!isStrongPassword(pwd)) {
+            Toast.makeText(this,
+                    "Password must be 8+ chars, include upper, lower, number, special char",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 BASE_URL + "admin_create_user.php",
                 response -> Toast.makeText(this, response, Toast.LENGTH_LONG).show(),
                 error -> Toast.makeText(this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()
         ) {
+
+
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();

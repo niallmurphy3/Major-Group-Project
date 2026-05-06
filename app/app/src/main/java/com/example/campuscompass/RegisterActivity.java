@@ -18,8 +18,18 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    private boolean isStrongPassword(String password) {
+        return password.length() >= 8 &&
+                password.matches(".*[A-Z].*") &&
+                password.matches(".*[a-z].*") &&
+                password.matches(".*\\d.*") &&
+                password.matches(".*[@#$%^&+=!].*");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -30,6 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
         Button registerBtn = findViewById(R.id.registerBtn);
 
         registerBtn.setOnClickListener(v -> {
+
+            String pwd = password.getText().toString().trim();
+
+            if (!isStrongPassword(pwd)) {
+                Toast.makeText(this,
+                        "Password must be 8+ chars, include upper, lower, number, special char",
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
 
             String url = "http://192.168.0.207/campusCompass/register.php";
 
