@@ -44,6 +44,7 @@
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".TeacherActivity"/>
         <activity android:name=".TeacherFeedActivity"/>
+        <activity android:name=".CarpoolActivity" />
 
 
     </application>

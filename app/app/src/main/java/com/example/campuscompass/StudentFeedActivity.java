@@ -29,11 +29,12 @@ public class StudentFeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_feed);
 
 
-
+        //receives username session data
         String username = getSharedPreferences("user", MODE_PRIVATE)
                 .getString("name", "User");
 
-        findViewById(R.id.logoutBtn).setOnClickListener(v -> {
+        //logout
+        findViewById(R.id.logoutButton).setOnClickListener(v -> {
 
             getSharedPreferences("user", MODE_PRIVATE)
                     .edit()
@@ -41,6 +42,7 @@ public class StudentFeedActivity extends AppCompatActivity {
                     .apply();
 
             Intent intent = new Intent(this, LoginActivity.class);
+            //prevents return to paeg
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
@@ -49,19 +51,23 @@ public class StudentFeedActivity extends AppCompatActivity {
         TextView usernameText = findViewById(R.id.usernameText);
         usernameText.setText(username);
 
+        //stored info for displayed feed and messages to be uploaded
         feedText = findViewById(R.id.feedText);
         postInput = findViewById(R.id.postContent);
 
         userEmail = getSharedPreferences("user", MODE_PRIVATE)
                 .getString("email", "");
 
+        //button to go to private messages
         Button goMessagesBtn = findViewById(R.id.goMessagesBtn);
         Button postBtn = findViewById(R.id.postBtn);
 
         loadFeed();
 
+        //on messages go to messages
         goMessagesBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, MessageActivity.class);
+            //carry username and email
             intent.putExtra("email", userEmail);
             intent.putExtra("name", getIntent().getStringExtra("name"));
             startActivity(intent);
@@ -72,28 +78,33 @@ public class StudentFeedActivity extends AppCompatActivity {
 
     private void postContent() {
 
+        //gets iputted text
         String content = postInput.getText().toString().trim();
 
+        //if no text fonud
         if (content.isEmpty()) {
             Toast.makeText(this, "Write something first", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //requests server connection
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 "http://192.168.0.207/campusCompass/create_post.php",
                 response -> {
+                    //response
                     Log.d("POST_RESPONSE", response);
                     Toast.makeText(this, "Posted", Toast.LENGTH_SHORT).show();
                     postInput.setText("");
                     loadFeed();
-                },
+                },//no response
                 error -> {
                     Log.e("POST_ERROR", error.toString());
                     Toast.makeText(this, "Post failed", Toast.LENGTH_SHORT).show();
                 }
         ) {
             @Override
+            //prepares data to send
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();
                 map.put("email", userEmail);
@@ -101,7 +112,7 @@ public class StudentFeedActivity extends AppCompatActivity {
                 return map;
             }
         };
-
+        //sends requests
         Volley.newRequestQueue(this).add(request);
     }
 

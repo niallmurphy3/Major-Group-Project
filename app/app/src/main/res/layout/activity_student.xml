@@ -52,10 +52,17 @@
             android:layout_marginBottom="12dp"/>
 
         <Button
+            android:id="@+id/carpoolBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Carpool"/>
+
+        <Button
             android:id="@+id/settingsBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="Settings"/>
+
 
     </LinearLayout>
 

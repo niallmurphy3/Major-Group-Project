@@ -15,19 +15,36 @@ import android.content.Intent;
 
 public class AdministrationActivity extends AppCompatActivity {
 
+    //checks password matches criteria listed, must be 8 or greater and include at least 1 capital, 1 number and 1 symbol
     private boolean isStrongPassword(String password) {
-        return password.length() >= 8 &&
-                password.matches(".*[A-Z].*") &&
-                password.matches(".*[a-z].*") &&
-                password.matches(".*\\d.*") &&
-                password.matches(".*[@#$%^&+=!].*");
+        if (password == null || password.length() < 8) return false;
+
+        boolean hasUpper = false;
+        boolean hasLower = false;
+        boolean hasDigit = false;
+        boolean hasSpecial = false;
+
+        for (char c : password.toCharArray()) {
+
+            if (Character.isUpperCase(c)) {
+                hasUpper = true;
+            } else if (Character.isLowerCase(c)) {
+                hasLower = true;
+            } else if (Character.isDigit(c)) {
+                hasDigit = true;
+            } else if ("!@#$%^&+=.".indexOf(c) != -1) {
+                hasSpecial = true;
+            }
+        }
+
+        return hasUpper && hasLower && hasDigit && hasSpecial;
     }
 
     EditText name, email, password, course;
-    Spinner roleSpinner;
-    Button createBtn, deleteBtn, updateBtn;
+    Spinner roles;
+    Button createButton, deleteButton, updateButton;
 
-
+    //CHANGE IP FOR NEW CONNECTION
     String BASE_URL = "http://192.168.0.207/campusCompass/";
 
     @Override
@@ -35,20 +52,21 @@ public class AdministrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_administration);
-
+        //logout
         findViewById(R.id.topBar)
-                .findViewById(R.id.logoutBtn)
+                .findViewById(R.id.logoutButton)
                 .setOnClickListener(v -> {
-
+                    //clears current session
                     getSharedPreferences("user", MODE_PRIVATE)
                             .edit()
                             .clear()
                             .apply();
-
+                    //redirects to loin page
                     Intent intent = new Intent(this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 });
+        //displays name
         String username = getIntent().getStringExtra("name");
 
         TextView usernameText = findViewById(R.id.usernameText);
@@ -59,26 +77,26 @@ public class AdministrationActivity extends AppCompatActivity {
         name = findViewById(R.id.adminName);
         email = findViewById(R.id.adminEmail);
         password = findViewById(R.id.adminPassword);
-        roleSpinner = findViewById(R.id.roleSpinner);
+        roles = findViewById(R.id.roleMenu);
         course = findViewById(R.id.adminCourse);
 
-        createBtn = findViewById(R.id.createUserBtn);
-        deleteBtn = findViewById(R.id.deleteUserBtn);
-        updateBtn = findViewById(R.id.updatePasswordBtn);
+        createButton = findViewById(R.id.createUserButton);
+        deleteButton = findViewById(R.id.deleteUserButton);
+        updateButton = findViewById(R.id.updatePasswordButton);
 
-
+        //roles for user creation (drop down to swap between)
         String[] roles = {"student", "teacher", "admin"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, roles);
-        roleSpinner.setAdapter(adapter);
+        this.roles.setAdapter(adapter);
 
-        createBtn.setOnClickListener(v -> createUser());
-        deleteBtn.setOnClickListener(v -> deleteUser());
-        updateBtn.setOnClickListener(v -> updatePassword());
+        createButton.setOnClickListener(v -> createUser());
+        deleteButton.setOnClickListener(v -> deleteUser());
+        updateButton.setOnClickListener(v -> updatePassword());
     }
 
     private void createUser() {
-
+        //checks inputted password
         String pwd = password.getText().toString().trim();
 
         if (!isStrongPassword(pwd)) {
@@ -87,6 +105,7 @@ public class AdministrationActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             return;
         }
+        //sends data to php
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 BASE_URL + "admin_create_user.php",
@@ -102,11 +121,11 @@ public class AdministrationActivity extends AppCompatActivity {
                 map.put("email", email.getText().toString());
                 map.put("password", password.getText().toString());
                 map.put("course", course.getText().toString());
-                map.put("role", roleSpinner.getSelectedItem().toString());
+                map.put("role", roles.getSelectedItem().toString());
                 return map;
             }
         };
-
+        //sends request
         Volley.newRequestQueue(this).add(request);
     }
 
@@ -120,11 +139,12 @@ public class AdministrationActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();
+                //deletes user by email
                 map.put("email", email.getText().toString());
                 return map;
             }
         };
-
+        //sends delete request
         Volley.newRequestQueue(this).add(request);
     }
 
@@ -138,12 +158,14 @@ public class AdministrationActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();
+                //updates by email
                 map.put("email", email.getText().toString());
+                //new password
                 map.put("password", password.getText().toString());
                 return map;
             }
         };
-
+        //sends request
         Volley.newRequestQueue(this).add(request);
     }
 }

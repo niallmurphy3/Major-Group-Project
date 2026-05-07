@@ -14,13 +14,15 @@ public class TeacherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
 
+        //receives username sessino data
         String username = getSharedPreferences("user", MODE_PRIVATE)
                 .getString("name", "User");
 
         TextView usernameText = findViewById(R.id.usernameText);
         usernameText.setText(username);
 
-        findViewById(R.id.logoutBtn).setOnClickListener(v -> {
+        //logout
+        findViewById(R.id.logoutButton).setOnClickListener(v -> {
 
             getSharedPreferences("user", MODE_PRIVATE)
                     .edit()
@@ -28,16 +30,19 @@ public class TeacherActivity extends AppCompatActivity {
                     .apply();
 
             Intent intent = new Intent(this, LoginActivity.class);
+            //prevent sreturn
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
+        //notifications
         Button notificationsBtn = findViewById(R.id.notificationsBtn);
         Button studentFeedBtn = findViewById(R.id.studentFeedBtn);
         Button messagesBtn = findViewById(R.id.messagesBtn);
         Button mapBtn = findViewById(R.id.mapBtn);
         Button settingsBtn = findViewById(R.id.settingsBtn);
 
+        //notification press listeners
         notificationsBtn.setOnClickListener(v ->
                 startActivity(new Intent(this, NotificationsActivity.class)));
 

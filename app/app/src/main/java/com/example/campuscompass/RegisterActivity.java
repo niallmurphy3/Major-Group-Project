@@ -17,19 +17,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-
+    //strength checker (ensures pw is 8 digits or more, has a capital and a number. needs all 3
     private boolean isStrongPassword(String password) {
-        return password.length() >= 8 &&
-                password.matches(".*[A-Z].*") &&
-                password.matches(".*[a-z].*") &&
-                password.matches(".*\\d.*") &&
-                password.matches(".*[@#$%^&+=!].*");
+        boolean hasUpper = false;
+        boolean hasNumber = false;
+
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUpper = true;
+            }
+
+            if (Character.isDigit(c)) {
+                hasNumber = true;
+            }
+        }
+
+        return password.length() >= 8 && hasUpper && hasNumber;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -39,18 +46,22 @@ public class RegisterActivity extends AppCompatActivity {
         EditText course = findViewById(R.id.courseEditText);
         Button registerBtn = findViewById(R.id.registerBtn);
 
+        //when register is clicked
         registerBtn.setOnClickListener(v -> {
 
+            //strength check password
             String pwd = password.getText().toString().trim();
 
+            //if its not strong enough error
             if (!isStrongPassword(pwd)) {
                 Toast.makeText(this,
                         "Password must be 8+ chars, include upper, lower, number, special char",
                         Toast.LENGTH_LONG).show();
                 return;
-            }
+            }//otherwise continue
 
             String url = "http://192.168.0.207/campusCompass/register.php";
+
 
             RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -58,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Request.Method.POST,
                     url,
                     response -> {
+                        //if server responds successfuly
                         Toast.makeText(this, response, Toast.LENGTH_LONG).show();
                     },
                     error -> {
@@ -67,6 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
             ) {
                 @Override
+                //prepares information to be sent
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("name", name.getText().toString().trim());
@@ -76,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return params;
                 }
             };
-
+            //sends request
             queue.add(request);
         });
     }

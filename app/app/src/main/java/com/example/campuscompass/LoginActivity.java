@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        //when login button is pressed it obtains password and email entered
         findViewById(R.id.loginBtn).setOnClickListener(v -> {
 
             String email = ((android.widget.EditText) findViewById(R.id.emailEditText))
@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             //CAHNGE IP WHEN CHANGE NETWORK and in network security conf
             String url = "http://192.168.0.207/campusCompass/login.php";
 
+            //creates requext
             RequestQueue queue = Volley.newRequestQueue(this);
 
             StringRequest request = new StringRequest(
@@ -49,13 +50,13 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(this,
                                         "Welcome " + name,
                                         Toast.LENGTH_SHORT).show();
-
+                                //applies status to user (different clearance levels, 0 is for student 1 is for teacher and 2 is for admin
                                 int userLevel = obj.getInt("user_level");
 
-
+                                //used to open new activity
                                 Intent intent;
 
-
+                                //decides wich activity to send you to dependant on clearance (e.g if you were an admin youd be given 2 and sent to admin panel page)
                                 if (userLevel == 2) {
 
                                     intent = new Intent(LoginActivity.this, AdministrationActivity.class);
@@ -64,30 +65,34 @@ public class LoginActivity extends AppCompatActivity {
                                 else if (userLevel == 1) {
                                     intent = new Intent(LoginActivity.this, TeacherActivity.class);
                                 }
+                                //if user level cant be found or is null defaults to lowest level for security reasons (student)
                                 else {
 
                                     intent = new Intent(LoginActivity.this, StudentActivity.class);
                                 }
 
-
+                                //saves session to keep data for future pages
                                 getSharedPreferences("user", MODE_PRIVATE)
                                         .edit()
                                         .putString("name", name)
                                         .putString("email", email)
                                         .putInt("user_level", userLevel)
+                                        //saves
                                         .apply();
 
+                                //starts next screen
                                 startActivity(intent);
+                                //finishes screen (return to this page will be as if the first time
                                 finish();
 
-
+                            //php error
                             } else {
                                 String message = obj.getString("message");
                                 Toast.makeText(this,
                                         message,
                                         Toast.LENGTH_SHORT).show();
                             }
-
+                        //json error
                         } catch (Exception e) {
                             Toast.makeText(this,
                                     "Response error",
@@ -95,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     },
+                    //network error
                     error -> {
                         Toast.makeText(this,
                                 "Network error",
@@ -103,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
             ) {
                 @Override
+                //defines data to send to php
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("email", email);
@@ -110,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                     return params;
                 }
             };
-
+            //sends it
             queue.add(request);
         });
     }
