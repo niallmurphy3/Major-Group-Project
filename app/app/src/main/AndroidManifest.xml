@@ -39,6 +39,11 @@
         <activity android:name=".AdministrationActivity" />
         <activity android:name=".StudentFeedActivity" />
         <activity android:name=".MapsActivity" />
+        <activity android:name=".StudentActivity"/>
+        <activity android:name=".NotificationsActivity"/>
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".TeacherActivity"/>
+        <activity android:name=".TeacherFeedActivity"/>
 
 
     </application>

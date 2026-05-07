@@ -1,0 +1,39 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/top_bar"/>
+
+    <Button
+        android:id="@+id/notificationsBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notifications"/>
+
+    <Button
+        android:id="@+id/studentFeedBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Student Feed"/>
+
+    <Button
+        android:id="@+id/messagesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Messages"/>
+
+    <Button
+        android:id="@+id/mapBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Campus Map"/>
+
+    <Button
+        android:id="@+id/settingsBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings"/>
+
+</LinearLayout>

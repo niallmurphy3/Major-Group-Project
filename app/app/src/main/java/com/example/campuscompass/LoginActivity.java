@@ -62,15 +62,20 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
                                 else if (userLevel == 1) {
-                                    intent = new Intent(LoginActivity.this, StudentFeedActivity.class);
+                                    intent = new Intent(LoginActivity.this, TeacherActivity.class);
                                 }
                                 else {
 
-                                    intent = new Intent(LoginActivity.this, StudentFeedActivity.class);
+                                    intent = new Intent(LoginActivity.this, StudentActivity.class);
                                 }
 
-                                intent.putExtra("email", email);
-                                intent.putExtra("name", name);
+
+                                getSharedPreferences("user", MODE_PRIVATE)
+                                        .edit()
+                                        .putString("name", name)
+                                        .putString("email", email)
+                                        .putInt("user_level", userLevel)
+                                        .apply();
 
                                 startActivity(intent);
                                 finish();

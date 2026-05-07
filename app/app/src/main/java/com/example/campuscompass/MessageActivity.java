@@ -22,7 +22,8 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        String username = getIntent().getStringExtra("name");
+        String username = getSharedPreferences("user", MODE_PRIVATE)
+                .getString("name", "User");
 
         findViewById(R.id.logoutBtn).setOnClickListener(v -> {
 
@@ -45,7 +46,8 @@ public class MessageActivity extends AppCompatActivity {
         EditText messageContent = findViewById(R.id.messageContent);
         Button sendBtn = findViewById(R.id.sendBtn);
 
-        String userEmail = getIntent().getStringExtra("email");
+        String userEmail = getSharedPreferences("user", MODE_PRIVATE)
+                .getString("email", "");
 
         StringRequest loadRequest = new StringRequest(
                 Request.Method.POST,

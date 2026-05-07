@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button loginButton = findViewById(R.id.loginButton);
         Button registerButton = findViewById(R.id.registerButton);
-        Button mapButton = findViewById(R.id.mapButton);
+
 
         loginButton.setOnClickListener(v -> {
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(registerIntent);
         });
 
-        mapButton.setOnClickListener(v -> {
-            Intent mapIntent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivity(mapIntent);
-        });
+
     }
 }

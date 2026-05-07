@@ -30,7 +30,8 @@ public class StudentFeedActivity extends AppCompatActivity {
 
 
 
-        String username = getIntent().getStringExtra("name");
+        String username = getSharedPreferences("user", MODE_PRIVATE)
+                .getString("name", "User");
 
         findViewById(R.id.logoutBtn).setOnClickListener(v -> {
 
@@ -51,7 +52,8 @@ public class StudentFeedActivity extends AppCompatActivity {
         feedText = findViewById(R.id.feedText);
         postInput = findViewById(R.id.postContent);
 
-        userEmail = getIntent().getStringExtra("email");
+        userEmail = getSharedPreferences("user", MODE_PRIVATE)
+                .getString("email", "");
 
         Button goMessagesBtn = findViewById(R.id.goMessagesBtn);
         Button postBtn = findViewById(R.id.postBtn);
