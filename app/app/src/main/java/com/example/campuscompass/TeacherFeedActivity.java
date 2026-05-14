@@ -28,7 +28,7 @@ public class TeacherFeedActivity extends AppCompatActivity {
     //converts to list
     ArrayAdapter<String> adapter;
 
-    String BASE_URL = "http://192.168.0.207/campusCompass/";
+    String BASE_URL = "http://10.68.168.121/campusCompass/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

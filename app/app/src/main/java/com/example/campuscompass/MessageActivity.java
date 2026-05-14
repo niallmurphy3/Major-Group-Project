@@ -59,7 +59,7 @@ public class MessageActivity extends AppCompatActivity {
 
         StringRequest loadRequest = new StringRequest(
                 Request.Method.POST,
-                "http://192.168.0.207/campusCompass/get_messages.php",
+                "http://10.68.168.121/campusCompass/get_messages.php",
                 response -> {
                     try {
                         //converts json to array
@@ -97,7 +97,7 @@ public class MessageActivity extends AppCompatActivity {
 
             StringRequest sendRequest = new StringRequest(
                     Request.Method.POST,
-                    "http://192.168.0.207/campusCompass/send_message.php",
+                    "http://10.68.168.121/campusCompass/send_message.php",
                     //if response, success. if not fail
                     response -> Toast.makeText(this, "Message sent", Toast.LENGTH_SHORT).show(),
                     error -> Toast.makeText(this, "Send failed", Toast.LENGTH_SHORT).show()

@@ -90,7 +90,7 @@ public class StudentFeedActivity extends AppCompatActivity {
         //requests server connection
         StringRequest request = new StringRequest(
                 Request.Method.POST,
-                "http://192.168.0.207/campusCompass/create_post.php",
+                "http://10.68.168.121/campusCompass/create_post.php",
                 response -> {
                     //response
                     Log.d("POST_RESPONSE", response);
@@ -118,7 +118,7 @@ public class StudentFeedActivity extends AppCompatActivity {
 
     private void loadFeed() {
 
-        String url = "http://192.168.0.207/campusCompass/get_feed.php";
+        String url = "http://10.68.168.121/campusCompass/get_feed.php";
 
         StringRequest request = new StringRequest(
                 Request.Method.POST,

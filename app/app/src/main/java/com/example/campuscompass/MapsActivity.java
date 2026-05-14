@@ -155,10 +155,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             startLatLng = campusLocations.get(startName);
         }
-
         //checks if it has location
         if (startLatLng == null) return;
-
         //builds link for google maps (start address =)
         String uri = "http://maps.google.com/maps?saddr="
                 //start coords
@@ -167,7 +165,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 + "&daddr="
                 //end coords
                 + endLatLng.latitude + "," + endLatLng.longitude;
-
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         intent.setPackage("com.google.android.apps.maps");
         startActivity(intent);

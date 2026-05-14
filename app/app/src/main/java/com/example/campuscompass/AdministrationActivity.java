@@ -45,7 +45,7 @@ public class AdministrationActivity extends AppCompatActivity {
     Button createButton, deleteButton, updateButton;
 
     //CHANGE IP FOR NEW CONNECTION
-    String BASE_URL = "http://192.168.0.207/campusCompass/";
+    String BASE_URL = "http://10.68.168.121/campusCompass/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +112,6 @@ public class AdministrationActivity extends AppCompatActivity {
                 response -> Toast.makeText(this, response, Toast.LENGTH_LONG).show(),
                 error -> Toast.makeText(this, "Error: " + error.toString(), Toast.LENGTH_LONG).show()
         ) {
-
-
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();

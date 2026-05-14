@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
                     .getText().toString().trim();
 
             //CAHNGE IP WHEN CHANGE NETWORK and in network security conf
-            String url = "http://192.168.0.207/campusCompass/login.php";
+            String url = "http://10.68.168.121/campusCompass/login.php";
 
             //creates requext
             RequestQueue queue = Volley.newRequestQueue(this);

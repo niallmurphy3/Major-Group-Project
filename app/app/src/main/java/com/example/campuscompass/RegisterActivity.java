@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }//otherwise continue
 
-            String url = "http://192.168.0.207/campusCompass/register.php";
+            String url = "http://10.68.168.121/campusCompass/register.php";
 
 
             RequestQueue queue = Volley.newRequestQueue(this);
